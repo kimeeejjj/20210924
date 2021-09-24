@@ -3,10 +3,10 @@ package person;
 import java.util.Scanner;
 
 public class PersonExe {
+	
 	public static Scanner scn = new Scanner(System.in);
 	private static PersonExe singleton = new PersonExe();
 	private Person[] persons;
-	
 
 	private PersonExe() {
 		persons = new Person[100];
@@ -33,8 +33,10 @@ public class PersonExe {
 				showList();
 			} else if (menu == 3) {
 				System.out.println("---수정---");
+				fixPerson();
 			} else if (menu == 4) {
 				System.out.println("---삭제---");
+				delatePerson();
 			} else if (menu == 5) {
 				System.out.println("-종료합니다. 이용해주셔서 감사합니다.-");
 				break;
@@ -71,9 +73,67 @@ public class PersonExe {
 	}
 		
 	
-	public Gender choiceGender() {
+	
+	public void showList() {
+		String name = readStr("이름을 입력하세요.");
+		Gender gender = choiceGender();
+		for(int i=0;i<persons.length;i++) {		
+			if(persons[i] !=null) {
+				if(!name.equals("") && gender != null) {
+					if(persons[i].getName().indexOf(name) != -1
+						&& persons[i].getGender() == gender)
+						System.out.println(persons[i].toString());
+				}else if(!name.equals("") && persons[i].getGender() == null) {
+					if(persons[i].getName().indexOf(name) != -1)
+						System.out.println(persons[i].toString());
+				}else if(persons[i].getGender() != null && name.equals(""))	{
+					if(persons[i].getGender() == gender)
+						System.out.println(persons[i].toString());
+				}else {
+					System.out.println(persons[i].toString());
+				}		
+			}
+		}
+	}
+	
+	//이름,성별,폰,회사,학교
+	public void fixPerson() {
+		System.out.println("[저장된목록]");
+		for(int i=0; i<persons.length;i++) {
+			if(persons[i] != null) {
+			System.out.println("["+i+"]"+persons[i].toString());
+			}
+		}
+		int num = readInt("수정할 사람의 번호를 선택하세요.");
+		String name=readStr("수정할 이름을 입력하세요.");
+		Gender gender=fixGender();
+		String phone=readStr("수정할 연락처를 입력하세요.");
+		if(!name.equals("")) {
+			persons[num].setName(name);
+		}
+	}
+	
+	public void delatePerson() {
+		System.out.println("[저장된목록]");
+		for(int i=0; i<persons.length;i++) {
+			if(persons[i] != null) {
+			System.out.println("["+i+"]"+persons[i].toString());
+			}
+		}
+		String num = readStr("삭제할 사람의 번호를 선택하세요.");
+		if(!num.equals("")) {
+			if(persons[Integer.parseInt(num)] != null) {
+				persons[Integer.parseInt(num)] = null;
+				System.out.println("삭제가 완료되었습니다");
+			} else if(persons[Integer.parseInt(num)] == null) {
+				System.out.println("삭제할 값이 없습니다");
+			}
+		}
+	}
+	
+	public Gender fixGender() {
 		while(true) {
-			int gender=readInt("성별을 입력하세요. [남자는 1, 여자는2]");
+			int gender=readInt("수정할 성별을 입력하세요.[남자는 1, 여자는 2]");
 			if(gender==1) {
 				return Gender.MAN;
 			}else if(gender==2) {
@@ -84,12 +144,16 @@ public class PersonExe {
 		}
 	}
 	
-	public void showList() {
-		String name = readStr("이름을 입력하세요.");
-		
-		
-	
-	
+	public Gender choiceGender() {
+		while(true) {
+			String gender=readStr("성별을 입력하세요. [남자는 A, 여자는 B]");
+			if(gender.equals("A")) {
+				return Gender.MAN;
+			}else if(gender.equals("B")) {
+				return Gender.WOMAN;
+			}
+		}
+	}
 	
 		
 

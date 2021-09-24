@@ -18,7 +18,7 @@ public class Worker extends Person {
 
 	@Override
 	public String toString() {
-		return "Student [이름="+this.getName()
+		return "Worker [이름="+this.getName()
 		+", 성별="+this.getGender()
 		+", 연락처="+this.getPhone() 
 		+", 회사="+company +"]";
