@@ -83,10 +83,10 @@ public class PersonExe {
 					if(persons[i].getName().indexOf(name) != -1
 						&& persons[i].getGender() == gender)
 						System.out.println(persons[i].toString());
-				}else if(!name.equals("") && persons[i].getGender() == null) {
+				}else if(!name.equals("") && gender == null) {
 					if(persons[i].getName().indexOf(name) != -1)
 						System.out.println(persons[i].toString());
-				}else if(persons[i].getGender() != null && name.equals(""))	{
+				}else if(gender != null && name.equals(""))	{
 					if(persons[i].getGender() == gender)
 						System.out.println(persons[i].toString());
 				}else {
@@ -106,12 +106,40 @@ public class PersonExe {
 		}
 		int num = readInt("수정할 사람의 번호를 선택하세요.");
 		String name=readStr("수정할 이름을 입력하세요.");
-		Gender gender=fixGender();
+		Gender gender=choiceGender();
 		String phone=readStr("수정할 연락처를 입력하세요.");
-		if(!name.equals("")) {
+		if(!name.equals("")&&gender!=null&&!phone.equals("")) { 
 			persons[num].setName(name);
+			persons[num].setGender(gender);
+			persons[num].setPhone(phone);
+		}else if(!name.equals("")&&gender!=null&&phone.equals("")) {
+			persons[num].setName(name);
+			persons[num].setGender(gender);
+		}else if(!name.equals("")&&gender==null&&!phone.equals("")) {
+			persons[num].setName(name);
+			persons[num].setPhone(phone);
+		}else if(name.equals("")&&gender!=null&&!phone.equals("")) {
+			persons[num].setGender(gender);
+			persons[num].setPhone(phone);
+		}else if(name.equals("")&&gender==null&&!phone.equals("")) {
+			persons[num].setPhone(phone);
+		}else if(name.equals("")&&gender!=null&&!phone.equals("")) {
+			persons[num].setGender(gender);
+		}else if(!name.equals("")&&gender==null&&phone.equals("")) {
+			persons[num].setName(name);
+		}else if(persons[num] instanceof Student) {
+			String school=readStr("수정할 학교명을 입력하세요.");
+			if(!school.equals("")) {
+				((Student)persons[num]).setSchool(school);
+			}
+		}else if(persons[num] instanceof Worker) {
+			String company=readStr("수정할 회사명을 입력하세요.");
+			if(!company.equals("")) {
+				((Worker)persons[num]).setCompany(company);
+			}
 		}
-	}
+	}	
+	
 	
 	public void delatePerson() {
 		System.out.println("[저장된목록]");
@@ -131,29 +159,17 @@ public class PersonExe {
 		}
 	}
 	
-	public Gender fixGender() {
-		while(true) {
-			int gender=readInt("수정할 성별을 입력하세요.[남자는 1, 여자는 2]");
-			if(gender==1) {
-				return Gender.MAN;
-			}else if(gender==2) {
-				return Gender.WOMAN;
-			}else {
-				System.out.println("잘못 입력하셨습니다. 다시 입력해주세요.");
-			}
-		}
-	}
 	
 	public Gender choiceGender() {
-		while(true) {
 			String gender=readStr("성별을 입력하세요. [남자는 A, 여자는 B]");
 			if(gender.equals("A")) {
 				return Gender.MAN;
 			}else if(gender.equals("B")) {
 				return Gender.WOMAN;
+			}else {
+				return null;
 			}
 		}
-	}
 	
 		
 
